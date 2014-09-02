@@ -207,8 +207,21 @@ p_sent =
 
 ggsave(p_sent, file = 'sent.jpeg')
 
-#t-test and wilcoxon text
+#t-test and wilcoxon text for sentiment pre- and post-2011
 sent_df$grad = as.integer(sent_df$yr >= 2011)
+
+#first test the normality assumption
+p_qq1 =
+  ggplot(subset(sent_df, grad == 0), aes(sample = sentiment)) +
+  stat_qq(colour = '#756bb1') +
+  ggtitle('Quantile-quantile plot for sentiment pre-2011')
+
+p_qq2 =
+  ggplot(subset(sent_df, grad == 1), aes(sample = sentiment)) +
+  stat_qq(colour = '#756bb1') +
+  ggtitle('Quantile-quantile plot for sentiment post-2011')
+
+grid.arrange(p_qq1, p_qq2, ncol = 2)
 
 sink('test.txt')
 t.test(sentiment ~ grad, data = sent_df)
