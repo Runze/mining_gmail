@@ -168,8 +168,7 @@ for (i in 1:length(f)) {
     dtm_train = dtm[-f[[i]], ]
     dtm_test = dtm[f[[i]], ]
     
-    set.seed(2014)
-    lda_train = LDA(dtm_train, k)
+    lda_train = LDA(dtm_train, k, control = list(seed = 2014))
     lda_test = LDA(dtm_test, model = lda_train)
     
     lda_eval = rbind(lda_eval, c(i, k, perplexity(lda_test)))
@@ -180,8 +179,7 @@ pp = ggplot(lda_eval, aes(x = topic, y = perplex, colour = as.factor(fold), grou
 ggsave(pp, file = 'perplex.jpg')
 
 #16 appears to be the optimal split
-set.seed(2014)
-lda_m = LDA(dtm, 16)
+lda_m = LDA(dtm, 16, control = list(seed = 2014))
 lda_topics = posterior(lda_m)$topics
 lda_terms = posterior(lda_m)$terms
 
